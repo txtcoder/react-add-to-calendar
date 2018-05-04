@@ -18809,6 +18809,12 @@
 	      return formattedDate;
 	    }
 	  }, {
+	    key: "yahooFormatTime",
+	    value: function yahooFormatTime(date) {
+	      var formattedDate = _moment2.default.utc(date).format("YYYYMMDDTHHmmssZ");
+	      return formattedDate.replace("+00:00", "Z");
+	    }
+	  }, {
 	    key: "calculateDuration",
 	    value: function calculateDuration(startTime, endTime) {
 	      // snag parameters and format properly in UTC
@@ -18836,7 +18842,7 @@
 	          calendarUrl = "https://calendar.google.com/calendar/render";
 	          calendarUrl += "?action=TEMPLATE";
 	          calendarUrl += "&dates=" + this.formatTime(event.startTime);
-	          calendarUrl += "/" + this.formatTime(event.endTime);
+	          calendarUrl += "/" + this.formatTime(event.endTime).add(1, 'd');
 	          calendarUrl += "&location=" + encodeURIComponent(event.location);
 	          calendarUrl += "&text=" + encodeURIComponent(event.title);
 	          calendarUrl += "&details=" + encodeURIComponent(event.description);
@@ -18847,7 +18853,7 @@
 	          var duration = this.calculateDuration(event.startTime, event.endTime);
 	          calendarUrl = "https://calendar.yahoo.com/?v=60&view=d&type=20";
 	          calendarUrl += "&title=" + encodeURIComponent(event.title);
-	          calendarUrl += "&st=" + this.formatTime(event.startTime);
+	          calendarUrl += "&st=" + this.yahooFormatTime(event.startTime);
 	          calendarUrl += "&dur=" + duration;
 	          calendarUrl += "&desc=" + encodeURIComponent(event.description);
 	          calendarUrl += "&in_loc=" + encodeURIComponent(event.location);
@@ -18855,8 +18861,8 @@
 
 	        case "outlookcom":
 	          calendarUrl = "https://outlook.live.com/owa/?rru=addevent";
-	          calendarUrl += "&startdt=" + this.formatTime(event.startTime);
-	          calendarUrl += "&enddt=" + this.formatTime(event.endTime);
+	          calendarUrl += "&startdt=" + this.formatTime(event.startTime).add(1, 'd');
+	          calendarUrl += "&enddt=" + this.formatTime(event.endTime).add(1, 'd');
 	          calendarUrl += "&subject=" + encodeURIComponent(event.title);
 	          calendarUrl += "&location=" + encodeURIComponent(event.location);
 	          calendarUrl += "&body=" + encodeURIComponent(event.description);
@@ -18866,7 +18872,7 @@
 	          break;
 
 	        default:
-	          calendarUrl = ["BEGIN:VCALENDAR", "VERSION:2.0", "BEGIN:VEVENT", "URL:" + document.URL, "DTSTART:" + this.formatTime(event.startTime), "DTEND:" + this.formatTime(event.endTime), "SUMMARY:" + event.title, "DESCRIPTION:" + event.description, "LOCATION:" + event.location, "END:VEVENT", "END:VCALENDAR"].join("\n");
+	          calendarUrl = ["BEGIN:VCALENDAR", "VERSION:2.0", "BEGIN:VEVENT", "URL:" + document.URL, "DTSTART:" + this.formatTime(event.startTime), "DTEND:" + this.formatTime(event.endTime).add(1, 'd'), "SUMMARY:" + event.title, "DESCRIPTION:" + event.description, "LOCATION:" + event.location, "END:VEVENT", "END:VCALENDAR"].join("\n");
 
 	          if (!isCrappyIE && this.isMobile()) {
 	            calendarUrl = encodeURI("data:text/calendar;charset=utf8," + calendarUrl);
