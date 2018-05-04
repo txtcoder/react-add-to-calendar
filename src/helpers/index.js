@@ -11,6 +11,11 @@ export default class helpers {
     return formattedDate;
   }
 
+  formatNextTime(date) {
+    let formattedDate = moment.utc(date).add(1,'d').format("YYYYMMDD");
+    return formattedDate;
+  }
+
   yahooFormatTime(date) {
     let formattedDate = moment.utc(date).format("YYYYMMDDTHHmmssZ");
     return formattedDate.replace("+00:00", "Z"); 
@@ -45,7 +50,7 @@ export default class helpers {
         calendarUrl = "https://calendar.google.com/calendar/render";
         calendarUrl += "?action=TEMPLATE";
         calendarUrl += "&dates=" + this.formatTime(event.startTime);
-        calendarUrl += "/" + this.formatTime(event.endTime).add(1,'d');
+        calendarUrl += "/" + this.formatNextTime(event.endTime);
         calendarUrl += "&location=" + encodeURIComponent(event.location);
         calendarUrl += "&text=" + encodeURIComponent(event.title);
         calendarUrl += "&details=" + encodeURIComponent(event.description);
@@ -64,8 +69,8 @@ export default class helpers {
 
       case "outlookcom":
         calendarUrl = "https://outlook.live.com/owa/?rru=addevent";
-        calendarUrl += "&startdt=" + this.formatTime(event.startTime).add(1,'d');
-        calendarUrl += "&enddt=" + this.formatTime(event.endTime).add(1,'d');
+        calendarUrl += "&startdt=" + this.formatNextTime(event.startTime);
+        calendarUrl += "&enddt=" + this.formatNextTime(event.endTime);
         calendarUrl += "&subject=" + encodeURIComponent(event.title);
         calendarUrl += "&location=" + encodeURIComponent(event.location);
         calendarUrl += "&body=" + encodeURIComponent(event.description);
@@ -81,7 +86,7 @@ export default class helpers {
           "BEGIN:VEVENT",
           "URL:" + document.URL,
           "DTSTART:" + this.formatTime(event.startTime),
-          "DTEND:" + this.formatTime(event.endTime).add(1,'d'),
+          "DTEND:" + this.formatNextTime(event.endTime),
           "SUMMARY:" + event.title,
           "DESCRIPTION:" + event.description,
           "LOCATION:" + event.location,

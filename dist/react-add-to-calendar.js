@@ -590,6 +590,12 @@ return /******/ (function(modules) { // webpackBootstrap
 	      return formattedDate;
 	    }
 	  }, {
+	    key: "formatNextTime",
+	    value: function formatNextTime(date) {
+	      var formattedDate = _moment2.default.utc(date).add(1, 'd').format("YYYYMMDD");
+	      return formattedDate;
+	    }
+	  }, {
 	    key: "yahooFormatTime",
 	    value: function yahooFormatTime(date) {
 	      var formattedDate = _moment2.default.utc(date).format("YYYYMMDDTHHmmssZ");
@@ -623,7 +629,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	          calendarUrl = "https://calendar.google.com/calendar/render";
 	          calendarUrl += "?action=TEMPLATE";
 	          calendarUrl += "&dates=" + this.formatTime(event.startTime);
-	          calendarUrl += "/" + this.formatTime(event.endTime).add(1, 'd');
+	          calendarUrl += "/" + this.formatNextTime(event.endTime);
 	          calendarUrl += "&location=" + encodeURIComponent(event.location);
 	          calendarUrl += "&text=" + encodeURIComponent(event.title);
 	          calendarUrl += "&details=" + encodeURIComponent(event.description);
@@ -642,8 +648,8 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	        case "outlookcom":
 	          calendarUrl = "https://outlook.live.com/owa/?rru=addevent";
-	          calendarUrl += "&startdt=" + this.formatTime(event.startTime).add(1, 'd');
-	          calendarUrl += "&enddt=" + this.formatTime(event.endTime).add(1, 'd');
+	          calendarUrl += "&startdt=" + this.formatNextTime(event.startTime);
+	          calendarUrl += "&enddt=" + this.formatNextTime(event.endTime);
 	          calendarUrl += "&subject=" + encodeURIComponent(event.title);
 	          calendarUrl += "&location=" + encodeURIComponent(event.location);
 	          calendarUrl += "&body=" + encodeURIComponent(event.description);
@@ -653,7 +659,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	          break;
 
 	        default:
-	          calendarUrl = ["BEGIN:VCALENDAR", "VERSION:2.0", "BEGIN:VEVENT", "URL:" + document.URL, "DTSTART:" + this.formatTime(event.startTime), "DTEND:" + this.formatTime(event.endTime).add(1, 'd'), "SUMMARY:" + event.title, "DESCRIPTION:" + event.description, "LOCATION:" + event.location, "END:VEVENT", "END:VCALENDAR"].join("\n");
+	          calendarUrl = ["BEGIN:VCALENDAR", "VERSION:2.0", "BEGIN:VEVENT", "URL:" + document.URL, "DTSTART:" + this.formatTime(event.startTime), "DTEND:" + this.formatNextTime(event.endTime), "SUMMARY:" + event.title, "DESCRIPTION:" + event.description, "LOCATION:" + event.location, "END:VEVENT", "END:VCALENDAR"].join("\n");
 
 	          if (!isCrappyIE && this.isMobile()) {
 	            calendarUrl = encodeURI("data:text/calendar;charset=utf8," + calendarUrl);
